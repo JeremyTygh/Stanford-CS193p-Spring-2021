@@ -11,6 +11,8 @@ SwiftUI is fairly new, having shipped just over a year before this course was ta
 
 The material in this course was not developed with the involvement of, nor was it vetted by, anyone at Apple, so it should not be perceived as "the truth" for how to develop using SwiftUI. We've done our best to understand this technology ourselves in the short time it has been out and then share what we've learned. Enjoy!
 
+### *Note: Look at commit history to see code from various assignments/ lectures*
+
 ## Assignment I
 
 ### Task 1: 
