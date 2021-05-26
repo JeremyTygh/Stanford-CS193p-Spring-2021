@@ -15,10 +15,10 @@ The material in this course was not developed with the involvement of, nor was i
 
 ## Assignment I
 
-### Task 1: 
+## Task 1: 
 Get the Memorize game working as demonstrated in lectures 1 and 2. Type in all the code. Do not copy/paste from anywhere.
 
-### Task 2: 
+## Task 2: 
 You can remove the ⊖ and ⊕ buttons at the bottom of the screen.
 
 
