@@ -13,6 +13,7 @@
 		DDA6C88E2652C92E00DE36B5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDA6C88D2652C92E00DE36B5 /* Preview Assets.xcassets */; };
 		DDA6C8A6265C75F300DE36B5 /* MemoryGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA6C8A5265C75F300DE36B5 /* MemoryGame.swift */; };
 		DDA6C8A9265C782600DE36B5 /* EmojiMemoryGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA6C8A8265C782600DE36B5 /* EmojiMemoryGame.swift */; };
+		DDF08A17265FDFE50063119E /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF08A16265FDFE50063119E /* Theme.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		DDA6C88F2652C92E00DE36B5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DDA6C8A5265C75F300DE36B5 /* MemoryGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryGame.swift; sourceTree = "<group>"; };
 		DDA6C8A8265C782600DE36B5 /* EmojiMemoryGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMemoryGame.swift; sourceTree = "<group>"; };
+		DDF08A16265FDFE50063119E /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				DDA6C8862652C92D00DE36B5 /* Memorize_App.swift */,
 				DDA6C8882652C92D00DE36B5 /* ContentView.swift */,
 				DDA6C8A5265C75F300DE36B5 /* MemoryGame.swift */,
+				DDF08A16265FDFE50063119E /* Theme.swift */,
 				DDA6C8A8265C782600DE36B5 /* EmojiMemoryGame.swift */,
 				DDA6C88A2652C92E00DE36B5 /* Assets.xcassets */,
 				DDA6C88F2652C92E00DE36B5 /* Info.plist */,
@@ -144,6 +147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDF08A17265FDFE50063119E /* Theme.swift in Sources */,
 				DDA6C8A6265C75F300DE36B5 /* MemoryGame.swift in Sources */,
 				DDA6C8892652C92D00DE36B5 /* ContentView.swift in Sources */,
 				DDA6C8872652C92D00DE36B5 /* Memorize_App.swift in Sources */,
