@@ -18,11 +18,21 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
            !cards[chosenIndex].isFaceUp,
            !cards[chosenIndex].isMatched
         {
+            
             if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
                 if cards[chosenIndex].content == cards[potentialMatchIndex].content {
                     cards[chosenIndex].isMatched = true
                     cards[potentialMatchIndex].isMatched = true
                     scoreOfTheGame += 2
+                } else {
+                    if cards[potentialMatchIndex].hasBeenSeen == true {
+                        scoreOfTheGame -= 1
+                    }
+                    if cards[chosenIndex].hasBeenSeen == true {
+                        scoreOfTheGame -= 1
+                    } //subtracts 1 if the second card selected has been seen when mismatached
+                    cards[chosenIndex].hasBeenSeen = true
+                    cards[potentialMatchIndex].hasBeenSeen = true
                 }
                 indexOfTheOneAndOnlyFaceUpCard = nil
                 
@@ -32,8 +42,8 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                 } //turn cards face down, as getting to else means indexOfTheOneAndOnlyFaceUpCard is nil (none are up, or more than one)
                 indexOfTheOneAndOnlyFaceUpCard = chosenIndex
             }
-            
-            
+
+//            cards[chosenIndex].hasBeenSeen = true
             cards[chosenIndex].isFaceUp.toggle()
         }
         //print("\(cards)")

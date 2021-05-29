@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct Theme<String> {
+struct Theme<Content> {
     let themeName: String
-    var setOfEmojiForTheme: [String]
+    var setOfEmojiForTheme: [Content]
     var numberOfPairs: Int
     var themeColor: String  //made themeColor a String, as this file is technically part of the model,
     //which is supposed to be UI independent.

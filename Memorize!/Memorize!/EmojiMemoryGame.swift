@@ -11,7 +11,7 @@ import SwiftUI
 class EmojiMemoryGame: ObservableObject {
     //static let emojis = ["🚗", "⛵️", "🚜", "🚲", "🚕", "🚌", "🚁", "🛶", "🛸", "🚒", "🚖", "🛴"].shuffled()
     
-    static var themes: [Theme] = [
+    static var themes: [Theme<String>] = [
         Theme(themeName: "Vehicles", setOfEmojiForTheme: ["🚗", "⛵️", "🚜", "🚲", "🚕", "🚌", "🚁", "🛶", "🛸", "🚒", "🚖", "🛴"], numberOfPairs: 6, themeColor: "red"),
         Theme(themeName: "Barn Animals", setOfEmojiForTheme: ["🐔", "🐥", "🐮", "🐷", "🐭", "🐑", "🐖", "🐓"], numberOfPairs: 5, themeColor: "yellow"),
         Theme(themeName: "Faces", setOfEmojiForTheme: ["👳‍♂️", "👩‍🦰", "👨🏽", "🧑🏿‍🦲", "👩🏻‍🦱", "👴", "👱🏽‍♀️", "👶🏻", "👦🏼", "🧔🏻", "👧🏽", "👱🏻‍♂️", "👵🏻", "🧓🏾"], numberOfPairs: 7, themeColor: "blue"),
@@ -20,23 +20,21 @@ class EmojiMemoryGame: ObservableObject {
         Theme(themeName: "Halloween", setOfEmojiForTheme: ["👻", "🎃", "🕷", "🦇", "💀"], numberOfPairs: 5, themeColor: "orange")
     ]
     
-//    var theme: Theme
-//
-//
-//    init() {
-//        let theme = EmojiMemoryGame.themes.randomElement()!
-//        self.theme = theme
-//        model = EmojiMemoryGame.createMemoryGame(with: theme)
-//    }
+//    @Published private var model: MemoryGame<String> = createMemoryGame(with: EmojiMemoryGame.theme)
     
-    @Published private var model: MemoryGame<String> = createMemoryGame(with: EmojiMemoryGame.theme)
+    @Published private var model: MemoryGame<String>
+    @Published private var currentTheme: Theme<String>
     
-    //@Published private var model: MemoryGame<String>
+    init() {
+        let theme = EmojiMemoryGame.themes.randomElement()!
+        model = EmojiMemoryGame.createMemoryGame(with: theme)
+        currentTheme = theme
+    }
     
-    static var theme = EmojiMemoryGame.themes.randomElement()!
+    //static var theme = EmojiMemoryGame.themes.randomElement()!
     //static let shuffledSetOfEmojis = theme.setOfEmojiForTheme.shuffled()
     
-    static func createMemoryGame(with theme: Theme) -> MemoryGame<String> {
+    static func createMemoryGame(with theme: Theme<String>) -> MemoryGame<String> {
         let shuffledSetOfEmojis = theme.setOfEmojiForTheme.shuffled()
         
         return MemoryGame<String>(numberOfPairsOfCards: theme.numberOfPairs) { pairIndex in
@@ -55,11 +53,11 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     var themeName: String {
-        EmojiMemoryGame.theme.themeName
+        currentTheme.themeName
     }
     
     var themeColor: Color {
-        let stringColor = EmojiMemoryGame.theme.themeColor
+        let stringColor = currentTheme.themeColor
         
         switch stringColor {
         case "red":
@@ -90,8 +88,8 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     func resetGame() {
-        EmojiMemoryGame.theme = EmojiMemoryGame.themes.randomElement()!
-        model = EmojiMemoryGame.createMemoryGame(with: EmojiMemoryGame.theme)
+        currentTheme = EmojiMemoryGame.themes.randomElement()!
+        model = EmojiMemoryGame.createMemoryGame(with: currentTheme)
     }
 }
 
