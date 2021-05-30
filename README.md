@@ -274,7 +274,7 @@ private(set) var scoreOfTheGame: Int = 0  //Initialize to nil. In view, if nil s
     }
 ```
 
-### Task 16. 
+### Task 16:
 Display the score in your UI. You can do this in whatever way you think looks best.
 
 ```swift
@@ -287,3 +287,42 @@ var scoreOfTheGame: Int {
         model.scoreOfTheGame
     }
 ```
+
+### Extra Credit 1: 
+When your code creates a Theme, allow it to default to use all the emoji available in the theme if the code that creates the Theme doesn’t want to explicitly specify how many pairs to use. This will require adding an init or two to your Theme struct.
+
+```swift
+init(themeName: String, setOfEmojiForTheme: [Content], themeColor: String, useGradient: Bool = false) {
+        self.themeName = themeName
+        self.setOfEmojiForTheme = setOfEmojiForTheme
+        self.numberOfPairs = setOfEmojiForTheme.count   //Because it is not declared, this defaults to nil
+        self.themeColor = themeColor
+        self.useGradient = useGradient
+    }
+```
+
+### Extra Credit 2:
+Allow the creation of some Themes where the number of pairs of cards to show is not a specific number but is, instead, a random number. We’re not saying that every Theme now shows a random number of cards, just that some Themes can now be created to show a random number of cards (while others still are created to show a specific, pre-determined number of cards).
+
+```swift
+Theme(themeName: "Faces", setOfEmojiForTheme: ["👳‍♂️", "👩‍🦰", "👨🏽", "🧑🏿‍🦲", "👩🏻‍🦱", "👴", "👱🏽‍♀️", "👶🏻", "👦🏼", "🧔🏻", "👧🏽", "👱🏻‍♂️", "👵🏻", "🧓🏾"], numberOfPairs: Int.random(in: 5..<8), themeColor: "blue", useGradient: true)
+```
+
+### Extra Credit 3: 
+Support a gradient as the “color” for a theme. Hint: fill() can take a Gradient as its argument rather than a Color. This is a “learning to look things up in the documentation” exercise.
+
+```swift
+//Added useGradient var to Theme struct
+var useGradient: Bool
+```
+
+```swift
+//Within the CardView struct (View) 
+if useGradient {
+        shape.fill(LinearGradient(gradient: Gradient(colors: [themeColor, Color.pink]), startPoint: .top, endPoint: .bottom))
+} else {
+        shape.fill(themeColor)
+}
+```
+
+
