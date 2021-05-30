@@ -15,21 +15,21 @@ The material in this course was not developed with the involvement of, nor was i
 
 ## Assignment I
 
-## Task 1: 
+### Task 1: 
 Get the Memorize game working as demonstrated in lectures 1 and 2. Type in all the code. Do not copy/paste from anywhere.
 
-## Task 2: 
+### Task 2: 
 You can remove the ⊖ and ⊕ buttons at the bottom of the screen.
 
 
-## Task 3:
+### Task 3:
 Add a title “Memorize!” to the top of the screen.
 
 ```swift
 Text("Memorize!").font(.largeTitle)
 ```
 
-## Task 4 - 9: 
+### Task 4 - 9: 
 Add at least 3 “theme choosing” buttons to your UI, each of which causes all of the cards to be replaced with new cards that contain emoji that match the chosen theme. You can use Vehicles from lecture as one of the 3 themes if you want to, but you are welcome to create 3 (or more) completely new themes.
 
 The number of cards in each of your 3 themes should be different, but in no case fewer than 8.
@@ -95,5 +95,195 @@ HStack(alignment: .bottom) {
             .padding(.horizontal)
 ```
 
-## Task 10: 
+### Task 10: 
 Your UI should work in portrait or landscape on any iPhone. This probably will not require any work on your part (that’s part of the power of SwiftUI), but be sure to experiment with running on different simulators in Xcode to be sure.
+
+## Assignment II
+
+### Task 1: 
+Get the Memorize game working as demonstrated in lectures 1 through 4. Type in all the code. Do not copy/paste from anywhere.
+
+### Task 2: 
+If you’re starting with your assignment 1 code, remove your theme-choosing buttons and (optionally) the title of your game.
+
+### Task 3: 
+Add the formal concept of a “Theme” to your Model. A Theme consists of a name for the theme, a set of emoji to use, a number of pairs of cards to show, and an appropriate color to use to draw the cards.
+
+```swift
+struct Theme<Content> {
+    let themeName: String
+    var setOfEmojiForTheme: [Content]
+    var numberOfPairs: Int?
+    var themeColor: String  //made themeColor a String, as this file is technically part of the model, which is supposed to be UI independent.
+    var useGradient: Bool
+    
+    ...
+    
+}
+```
+
+### Task 4: 
+At least one Theme in your game should show fewer pairs of cards than the number of emoji available in that theme.
+
+```swift
+Theme(themeName: "Barn Animals", setOfEmojiForTheme: ["🐔", "🐥", "🐮", "🐷", "🐭", "🐑", "🐖", "🐓"], numberOfPairs: 5, themeColor: "yellow")
+```
+
+### Task 5: 
+If the number of pairs of emoji to show in a Theme is fewer than the number of emojis that are available in that theme, then it should not just always use the first few emoji in the theme. It must use any of the emoji in the theme. In other words, do not have any “dead emoji” in your code that can never appear in a game.
+
+```swift
+static func createMemoryGame(with theme: Theme<String>) -> MemoryGame<String> {
+        let shuffledSetOfEmojis = theme.setOfEmojiForTheme.shuffled()
+        
+        return MemoryGame<String>(numberOfPairsOfCards: theme.numberOfPairs!) { pairIndex in  //added a force unwrap of numberOfPairs
+            //theme.setOfEmojiForTheme[pairIndex]
+            shuffledSetOfEmojis[pairIndex]
+        }
+    }
+```
+### Task 6 - 7: 
+Never allow more than one pair of cards in a game to have the same emoji on it.
+
+If a Theme mistakenly specifies to show more pairs of cards than there are emoji available, then automatically reduce the count of cards to show to match the count of available emoji.
+
+```swift
+    //init created within Theme.swift
+    init(themeName: String, setOfEmojiForTheme: [Content], numberOfPairs: Int?, themeColor: String, useGradient: Bool = false) {
+        self.themeName = themeName
+        self.setOfEmojiForTheme = setOfEmojiForTheme
+        let contentCount = setOfEmojiForTheme.count
+        self.numberOfPairs = numberOfPairs ?? contentCount //use nil-coalescing operator, as value initiliazed can still be nil. This makes a force unwrap in the viewModel and next line safe.
+        if(self.numberOfPairs! > contentCount) {
+            self.numberOfPairs = contentCount
+        }
+        
+        //Alternatively: (Not quite as readable in my opinion)
+        //self.numberOfPairs = (self.numberOfPairs! < setOfEmojiForTheme.count) ? self.numberOfPairs : setOfEmojiForTheme.count
+        self.themeColor = themeColor
+        self.useGradient = useGradient
+    }
+```
+
+### Task 8 - 9: 
+Support at least 6 different themes in your game.
+
+A new theme should be able to be added to your game with a single line of code.
+
+```swift
+//viewModel (EmojiMemoryGame.swift)
+static var themes: [Theme<String>] = [
+        Theme(themeName: "Vehicles", setOfEmojiForTheme: ["🚗", "⛵️", "🚜", "🚲", "🚕", "🚌", "🚁", "🛶", "🛸", "🚒", "🚖", "🛴"], numberOfPairs: 6, themeColor: "red"),
+        Theme(themeName: "Barn Animals", setOfEmojiForTheme: ["🐔", "🐥", "🐮", "🐷", "🐭", "🐑", "🐖", "🐓"], numberOfPairs: 5, themeColor: "yellow"),
+        Theme(themeName: "Faces", setOfEmojiForTheme: ["👳‍♂️", "👩‍🦰", "👨🏽", "🧑🏿‍🦲", "👩🏻‍🦱", "👴", "👱🏽‍♀️", "👶🏻", "👦🏼", "🧔🏻", "👧🏽", "👱🏻‍♂️", "👵🏻", "🧓🏾"], numberOfPairs: Int.random(in: 5..<8), themeColor: "blue", useGradient: true),
+        Theme(themeName: "Bugs", setOfEmojiForTheme: ["🐝", "🐛", "🦋", "🐞", "🐜", "🦟", "🦗", "🕷", "🦂", "🐌"], numberOfPairs: 8, themeColor: "green"),
+        Theme(themeName: "Flags", setOfEmojiForTheme: ["🇳🇴", "🇸🇪", "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "🇺🇸", "🇬🇧", "🇮🇪", "🇨🇦"], numberOfPairs: 8, themeColor: "purple", useGradient: true),
+        Theme(themeName: "Halloween", setOfEmojiForTheme: ["👻", "🎃", "🕷", "🦇", "💀"], themeColor: "orange")
+    ]
+```
+
+### Task 10 - 13: 
+Add a “New Game” button to your UI (anywhere you think is best) which begins a brand new game.
+
+A new game should use a randomly chosen theme and touching the New Game button should repeatedly keep choosing a new random theme.
+
+The cards in a new game should all start face down.
+
+The cards in a new game should be fully shuffled. This means that they are not in any predictable order, that they are selected from any of the emojis in the theme (i.e. Required Task 5), and also that the matching pairs are not all side-by-side like they were in lecture (though they can accidentally still appear side-by-side at random).
+
+```swift
+//View
+Button(action: {viewModel.resetGame()}, label: {
+                Text("New Game")
+            }).padding()
+```
+```swift
+//ViewModel
+func resetGame() {
+        currentTheme = EmojiMemoryGame.themes.randomElement()!
+        model = EmojiMemoryGame.createMemoryGame(with: currentTheme)
+    }
+```
+
+### Task 14: 
+Show the theme’s name in your UI. You can do this in whatever way you think looks best.
+
+```swift
+//View
+Text("\(viewModel.themeName)").font(.largeTitle)
+```
+```swift
+//ViewModel
+var themeName: String {
+        currentTheme.themeName
+    }
+```
+### Task 15: 
+Keep score in your game by penalizing 1 point for every previously seen card that is involved in a mismatch and giving 2 points for every match (whether or not the cards involved have been “previously seen”). See Hints below for a more detailed explanation. The score is allowed to be negative if the user is bad at Memorize.
+
+```swift
+//Added hasBeenSeen to Card struct: 
+
+struct Card: Identifiable {
+        var isFaceUp: Bool = false
+        var isMatched: Bool = false
+        var hasBeenSeen: Bool = false
+        var content: CardContent
+        var id: Int
+    }
+```
+```swift
+//Updated scoreOfTheGame throughout choose func
+private var indexOfTheOneAndOnlyFaceUpCard: Int?
+private(set) var scoreOfTheGame: Int = 0  //Initialize to nil. In view, if nil score is --, otherwise, score is an integer.
+    
+    mutating func choose(_ card: Card) {
+        if let chosenIndex = cards.firstIndex(where: {$0.id == card.id}),
+           !cards[chosenIndex].isFaceUp,
+           !cards[chosenIndex].isMatched
+        {
+            
+            if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
+                if cards[chosenIndex].content == cards[potentialMatchIndex].content {
+                    cards[chosenIndex].isMatched = true
+                    cards[potentialMatchIndex].isMatched = true
+                    scoreOfTheGame += 2
+                } else {
+                    if cards[potentialMatchIndex].hasBeenSeen == true {
+                        scoreOfTheGame -= 1
+                    }
+                    if cards[chosenIndex].hasBeenSeen == true {
+                        scoreOfTheGame -= 1
+                    } //subtracts 1 if the second card selected has been seen when mismatached
+                    cards[chosenIndex].hasBeenSeen = true
+                    cards[potentialMatchIndex].hasBeenSeen = true
+                }
+                indexOfTheOneAndOnlyFaceUpCard = nil
+                
+            } else {
+                for index in cards.indices {
+                    cards[index].isFaceUp = false
+                } //turn cards face down, as getting to else means indexOfTheOneAndOnlyFaceUpCard is nil (none are up, or more than one)
+                indexOfTheOneAndOnlyFaceUpCard = chosenIndex
+            }
+
+//            cards[chosenIndex].hasBeenSeen = true
+            cards[chosenIndex].isFaceUp.toggle()
+        }
+        //print("\(cards)")
+    }
+```
+
+### Task 16. 
+Display the score in your UI. You can do this in whatever way you think looks best.
+
+```swift
+//View
+Text("Score: \(viewModel.scoreOfTheGame)").font(.title).padding()
+```
+```swift
+//ViewModel
+var scoreOfTheGame: Int {
+        model.scoreOfTheGame
+    }
+```
