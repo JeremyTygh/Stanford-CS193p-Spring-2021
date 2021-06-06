@@ -10,7 +10,13 @@ import Foundation
 struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards: Array<Card>
     
-    private var indexOfTheOneAndOnlyFaceUpCard: Int?
+    private var indexOfTheOneAndOnlyFaceUpCard: Int? {
+        get { cards.indices.filter({ cards[$0].isFaceUp}).oneAndOnly }
+        set { cards.indices.forEach { cards[$0].isFaceUp = ($0 == newValue) } }
+        //turn cards face down, as getting to else means indexOfTheOneAndOnlyFaceUpCard
+        //is nil (none are up, or more than one)
+    }
+    
     private(set) var scoreOfTheGame: Int = 0  //Initialize to nil. In view, if nil score is --, otherwise, score is an integer.
     
     mutating func choose(_ card: Card) {
@@ -34,23 +40,16 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                     cards[chosenIndex].hasBeenSeen = true
                     cards[potentialMatchIndex].hasBeenSeen = true
                 }
-                indexOfTheOneAndOnlyFaceUpCard = nil
-                
+                cards[chosenIndex].isFaceUp = true
             } else {
-                for index in cards.indices {
-                    cards[index].isFaceUp = false
-                } //turn cards face down, as getting to else means indexOfTheOneAndOnlyFaceUpCard is nil (none are up, or more than one)
                 indexOfTheOneAndOnlyFaceUpCard = chosenIndex
             }
-
-//            cards[chosenIndex].hasBeenSeen = true
-            cards[chosenIndex].isFaceUp.toggle()
         }
         //print("\(cards)")
     }
     
     init(numberOfPairsOfCards: Int, createCardContent: (Int) -> CardContent) {
-        cards = Array<Card>()
+        cards = []
         for pairIndex in 0..<numberOfPairsOfCards {
             let content = createCardContent(pairIndex)
             cards.append(Card(content: content, id: pairIndex*2))
@@ -60,11 +59,21 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     }
     
     struct Card: Identifiable {
-        var isFaceUp: Bool = false
-        var isMatched: Bool = false
-        var hasBeenSeen: Bool = false
-        var content: CardContent
-        var id: Int
+        var isFaceUp = false
+        var isMatched = false
+        var hasBeenSeen = false
+        let content: CardContent
+        let id: Int
     }
     
+}
+
+extension Array {
+    var oneAndOnly: Element? {
+        if count == 1 {
+            return first
+        } else {
+            return nil
+        }
+    }
 }
