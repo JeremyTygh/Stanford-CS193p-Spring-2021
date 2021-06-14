@@ -11,29 +11,20 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var game: EmojiMemoryGame = EmojiMemoryGame()
     
     var body: some View {
-        ScrollView {
-            Text("\(game.themeName)").font(.largeTitle)
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-                ForEach(game.cards) { card in
-                    CardView(card: card, themeColor: game.themeColor, useGradient: game.useGradient)
-                        .aspectRatio(2/3, contentMode: .fit)
-                        .onTapGesture {
-                            game.choose(card)
-                        }
-                        //.foregroundColor(viewModel.themeColor)
-                }
+        AspectVGrid(items: game.cards, aspectRatio: 2/3){ card in
+            if card.isMatched && !card.isFaceUp {
+                Rectangle().opacity(0)
+            } else {
+                CardView(card: card, themeColor: game.themeColor, useGradient: game.useGradient)
+                    .padding(4)
+                    .onTapGesture {
+                        game.choose(card)
+                    }
+                    .foregroundColor(game.themeColor)
+                
             }
-            Spacer()
-            Text("Score: \(game.scoreOfTheGame)").font(.title).padding()
-            Spacer()
-            
-            Button(action: {game.resetGame()}, label: {
-                Text("New Game")
-            }).padding()
-            
         }
         .padding(.horizontal)
-        
         
     }
 }
@@ -46,9 +37,9 @@ struct CardView: View {
     
     /*
      init(_ givenCard: EmojiMemoryGame.Card) {
-        card = givenCard
+     card = givenCard
      }  //this init can allow for a call like: CardView(card). I am not using it, because I have
-        // other parameters in the CardView, making labels useful for clarity in a call to this struct.
+     // other parameters in the CardView, making labels useful for clarity in a call to this struct.
      */
     
     var body: some View {
@@ -58,6 +49,8 @@ struct CardView: View {
                 if card.isFaceUp {
                     shape.fill().foregroundColor(.white)
                     shape.strokeBorder(lineWidth: DrawingConstants.lineWidth).foregroundColor(themeColor)
+                    Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 110-90))
+                        .padding(5).opacity(0.5)
                     Text(card.content).font(font(in: geometry.size))
                 } else if card.isMatched {
                     shape.opacity(0)
@@ -80,9 +73,9 @@ struct CardView: View {
     }
     
     private struct DrawingConstants {
-        static let cornerRadius: CGFloat = 20
+        static let cornerRadius: CGFloat = 10
         static let lineWidth: CGFloat = 3
-        static let fontScale: CGFloat = 0.8
+        static let fontScale: CGFloat = 0.7
     }
     
     
@@ -108,11 +101,11 @@ struct CardView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let game = EmojiMemoryGame()
-        
-        EmojiMemoryGameView(game: game)
-            .preferredColorScheme(.light)
-        EmojiMemoryGameView(game: game)
-            .preferredColorScheme(.dark)
+        game.choose(game.cards.first!)
+        return EmojiMemoryGameView(game: game)
+//            .preferredColorScheme(.light)
+//        EmojiMemoryGameView(game: game)
+//            .preferredColorScheme(.dark)
     }
 }
 
