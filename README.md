@@ -325,4 +325,16 @@ if useGradient {
 }
 ```
 
+## Assignment III
 
+### Task 1: 
+Implement a game of solo (i.e. one player) Set.
+
+### Task 2-18:
+The remainder of the tasks for this assignment can be viewed at the following link: 
+
+https://cs193p.sites.stanford.edu/sites/g/files/sbiybj16636/files/media/file/assignment_3_0.pdf
+
+<img src="https://user-images.githubusercontent.com/55996049/124500031-080b0800-dd8d-11eb-97d5-71453476aa17.png" width="200">
+
+Please reference the "Set!" folder above to see my implmentation for assignment 3.
