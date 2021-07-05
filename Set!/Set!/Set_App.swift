@@ -9,7 +9,8 @@ import SwiftUI
 
 @main
 struct Set_App: App {
-    private let game = ShapeSetGame(cards: ShapeSetCard.generateDeck())
+//    private let game = ShapeSetGame(cards: ShapeSetCard.generateDeck())
+    private let game = ShapeSetGame()
 
     var body: some Scene {
         WindowGroup {
