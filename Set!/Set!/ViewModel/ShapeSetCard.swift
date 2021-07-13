@@ -24,7 +24,7 @@ struct ShapeSetCard: SetCard, Identifiable, Hashable {
     var setShading: SetShading
     var setColor: SetColor
     
-    var isMatched: Bool = false
+    var isMatched: Bool?
     var isSelected: Bool = false
     
     var id: Int

@@ -10,7 +10,7 @@ import SwiftUI
 struct ShapeSetGameView: View {
     //    @ObservedObject var game: ShapeSetGame = ShapeSetGame(cards: ShapeSetCard.generateDeck())
     @ObservedObject var game: ShapeSetGame = ShapeSetGame()
-    
+    @ Namespace private var dealingNamespace
     
     var body: some View {  
         //NavigationView {
@@ -19,55 +19,53 @@ struct ShapeSetGameView: View {
                 .opacity(0.23)
                 .ignoresSafeArea()
             VStack {
-                AspectVGrid(items: game.cardsInPlay, aspectRatio: 2/3) {card in
-                    CardView(card: card)
-                        .padding(4)
-                        .onTapGesture {
-                            game.choose(card)
-                        }
-                }
-                .padding(.horizontal)
+                gameBody
                 
                 HStack {
-                    Button(action: {game.dealCards()}, label: {
-                        Text("Deal Cards")
-                    })
-                    .disabled(game.deck.isEmpty)
-                    .padding(.horizontal)
-
+                    deal
                     Spacer()
                     Text("Score: \(game.score)")
                     Spacer()
-
-                    Button(action: {game.resetGame()}, label: {
-                        Text("New Game")
-                    })
-                    .padding(.horizontal)
+                    restart
                 }
                 .padding(.horizontal)
             }
-//                            .toolbar {
-//                                ToolbarItemGroup(placement: ToolbarItemPlacement.bottomBar) {
-//                                    Button(action: {game.dealCards()}, label: {
-//                                        Text("Deal Cards")
-//                                    })
-//                                    .disabled(game.deck.isEmpty)
-//
-//                                    Spacer()
-//
-//                                    Button(action: {game.resetGame()}, label: {
-//                                        Text("New Game")
-//                                    })
-//                                }
-//                            }
-//                            .navigationBarTitle("")
-//                            .navigationBarHidden(true)
-        //}
-        
         
         }
         
         
+    }
+    
+    var gameBody: some View {
+        AspectVGrid(items: game.cardsInPlay, aspectRatio: 2/3) {card in
+            CardView(card: card)
+                .padding(4)
+                .onTapGesture {
+                    withAnimation {
+                        game.choose(card)
+                    }
+                }
+        }
+        .padding(.horizontal)
+    }
+    var deal: some View {
+        Button("Deal Cards") {
+            withAnimation {
+                game.dealCards()
+            }
+        }
+        .disabled(game.deck.isEmpty)
+        .padding(.horizontal)
+  
+    }
+    
+    var restart: some View {
+        Button("New Game") {
+            withAnimation {
+                game.resetGame()
+            }
+        }
+        .padding(.horizontal)
     }
     
 }

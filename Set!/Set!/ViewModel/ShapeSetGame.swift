@@ -40,10 +40,23 @@ class ShapeSetGame: ObservableObject {
         return deck
     }
     
+    var cardsInPlay: [ShapeSetCard] {
+        model.cardsInPlay
+    }
+    
+    var deck: [ShapeSetCard] {
+        model.deck
+    }
+
+    var score: Int {
+        model.score
+    }
+    
+    //MARK: - Intents(s)
+    
     func resetGame() {
         model = ShapeSetGame.createSetGame()
     }
-    
     
     func choose(_ card: ShapeSetCard) {
         model.choose(card)
@@ -56,17 +69,6 @@ class ShapeSetGame: ObservableObject {
     func dealFirstCards() {
         model.dealCards(12)
     }
-    
-    var cardsInPlay: [ShapeSetCard] {
-        model.cardsInPlay
-    }
-    
-    var deck: [ShapeSetCard] {
-        model.deck
-    }
-    
-    var score: Int {
-        model.score
-    }
+
     
 }

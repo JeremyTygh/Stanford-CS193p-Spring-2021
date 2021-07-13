@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// A type that represents a card with 4 distinct features.
 protocol SetCard: Identifiable, Equatable {
     associatedtype FeatureA: Equatable
     associatedtype FeatureB: Equatable
@@ -18,7 +19,7 @@ protocol SetCard: Identifiable, Equatable {
     var featureC: FeatureC { get }
     var featureD: FeatureD { get }
     
-    var isMatched: Bool {get set}
+    var isMatched: Bool? {get set}
     var isSelected: Bool {get set}
 }
 
