@@ -15,6 +15,8 @@ The material in this course was not developed with the involvement of, nor was i
 
 ## Assignment I
 
+### Concepts to practice: Xcode 12; Swift 5.4; Writing code in the in-line function that supplies the value of a View's body var; Syntax for passing closures as arguments; Understanding basic building block Views like Text, Button, Spacer, etc.; Putting Views together using VStack, HStack, etc.; Modifying Views; Using @State; Very simple use of Array; Using a Range as a subscript to an Array; The SF Symbols Application; Putting system images into your UI using Image(systemName:); Looking things up in documentation; Int.random(in:); Running your application in different simulators
+
 ### Task 1: 
 Get the Memorize game working as demonstrated in lectures 1 and 2. Type in all the code. Do not copy/paste from anywhere.
 
@@ -99,6 +101,8 @@ HStack(alignment: .bottom) {
 Your UI should work in portrait or landscape on any iPhone. This probably will not require any work on your part (that’s part of the power of SwiftUI), but be sure to experiment with running on different simulators in Xcode to be sure.
 
 ## Assignment II
+
+### Concepts to practice: MVVM; Intent functions; init functions; Type Variables (i.e., static); Access Control (i.e., private); Array; Closures
 
 ### Task 1: 
 Get the Memorize game working as demonstrated in lectures 1 through 4. Type in all the code. Do not copy/paste from anywhere.
@@ -327,6 +331,8 @@ if useGradient {
 
 ## Assignment III
 
+### Concepts to practice: All the things from assignments 1 and 2, but from scratch this time; Access Control; Shape; GeometryReader; enum; Closures
+
 ### Task 1: 
 Implement a game of solo (i.e. one player) Set.
 
@@ -338,3 +344,124 @@ https://cs193p.sites.stanford.edu/sites/g/files/sbiybj16636/files/media/file/ass
 <img src="https://user-images.githubusercontent.com/55996049/124500031-080b0800-dd8d-11eb-97d5-71453476aa17.png" width="200">
 
 Please reference the "Set!" folder above to see my implmentation for assignment 3.
+
+## Assignment IV
+
+### Concepts to practice: Animation (implicit and explicit)
+
+### Task 1-5:
+Your assignment this week must still play a solo game of Set.
+
+In this version, though, when there is a match showing and the user chooses another card, do not replace the matched cards; instead, discard them (leaving fewer cards in the game).
+
+Add a “deck” and a “discard pile” to your UI. They can be any size you want and you can put them anywhere you want on screen, but they should not be part of your main grid of cards and they should each look like a stack of cards (for example, they should have the same aspect ratio as the cards that are in play).
+
+The deck should contain all the not-yet-dealt cards in the game. They should be “face down” (i.e. you should not be able to see the symbols on them).
+
+The discard pile should contain all the cards that have been discarded from the game (i.e. the cards that were discarded because they matched). These cards should be face up (i.e. you should be able to see the symbols on the last discarded card). Obviously the discard pile is empty when your game starts.
+
+```swift 
+    var deckBody: some View {
+        ZStack {
+            ForEach(game.deck) { card in           
+                    CardView(card: card)
+                        .matchedGeometryEffect(id: card.id, in: dealingNamespace)
+                        .zIndex(zIndex(of: card))
+            }
+        }
+        .frame(width: CardConstants.undealtWidth, height: CardConstants.undealtHeight)
+        .foregroundColor(Color.blue)
+        .onTapGesture {
+            for index in 0..<3 {
+                withAnimation(dealAnimation(count: 3, index: index, totalDealDuration: CardConstants.totalDealDuration)) {                 
+                    game.dealCard()
+                }
+            }
+            
+        }
+    }
+```
+```swift
+var discardPileBody: some View {
+        ZStack {
+            if game.discardPile.isEmpty {
+                Color.clear
+            } else {
+                ForEach(game.discardPile) { card in
+                    CardView(card: card)
+                        .matchedGeometryEffect(id: card.id, in: discardingNamespace)
+                }
+            }
+        }
+        .frame(width: CardConstants.undealtWidth, height: CardConstants.undealtHeight)
+    }
+```
+Task 6:
+Any time matched cards are discarded, they should be animated to “fly” to the discard pile.
+
+```swift
+//Within gameBody. Is a modifier for a CardView
+.onTapGesture {
+    withAnimation {
+        game.choose(card)
+    }
+}
+```
+
+Task 7:
+You don’t need your “Deal 3 More Cards” button any more. Instead, tapping on the deck should deal 3 more cards.
+
+```swift
+.onTapGesture {
+    for index in 0..<3 {
+        withAnimation(dealAnimation(count: 3, index: index, totalDealDuration: CardConstants.totalDealDuration)) {
+            game.dealCard()
+        }
+     }
+}
+```
+
+Task 8: 
+Whenever more cards are dealt into the game for any reason (including to start the game), their appearance should be animated by “flying them” from the deck into place.
+```swift
+private func dealAnimation(count: Double, index: Int, totalDealDuration: Double) -> Animation {
+        let delay = Double(index) * (totalDealDuration / count)
+        return Animation.easeInOut(duration: CardConstants.dealDuration).delay(delay)
+    }
+```
+
+Task 9-10:
+Note that dealing 3 more cards when a match is showing on the board still should replace those cards and that those matched cards would be flying to the discard pile at the same time as the 3 new cards are flying from the deck (see Extra Credit too).
+
+All the card repositioning and resizing that was required by Required Task 2 in last week’s assignment must now be animated. If your cards from last week never changed their size or position as cards were dealt or discarded, then fix that this week so that they do.
+
+```swift
+    mutating func dealCard() {
+        if setIsSelected() {
+            discardCards()
+        }
+        if !deck.isEmpty {
+            cardsInPlay.append(deck.first!)
+            deck = Array(deck.dropFirst())
+        }
+    }
+```
+
+Task 11:
+When a match occurs, use some animation (your choice) to draw attention to the match.
+
+```swift
+//modifier on shape in CardView
+.rotationEffect(Angle.degrees((card.isMatched ?? false) ? 360 : 0))
+```
+
+Task 12:
+When a mismatch occurs, use some animation (your choice) to draw attention to the mismatch. This animation must be very noticeably different from the animation used to show a match (obviously).
+```swift
+//modifier on shape in CardView
+.shake(animatableData: card.isMatched == false ? 1 : 0)
+```
+
+
+
+
