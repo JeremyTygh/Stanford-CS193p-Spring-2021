@@ -26,6 +26,7 @@ struct ShapeSetCard: SetCard, Identifiable, Hashable {
     
     var isMatched: Bool?
     var isSelected: Bool = false
+    var isFaceUp: Bool = false
     
     var id: Int
     

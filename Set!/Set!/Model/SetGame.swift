@@ -23,7 +23,7 @@ struct SetGame<Card> where Card: SetCard {
         deck = cards.shuffled()
         cardsInPlay = []
         discardPile = []
-        dealCards(dealtCardsSize)
+        //dealCards(dealtCardsSize)
     }
     
     /// Determines if a set is currently selected.
@@ -36,21 +36,25 @@ struct SetGame<Card> where Card: SetCard {
         } else {
             return false
         }
-    }
+    } 
     
     /// Selects a card chosen by the user and changes the state of selected cards to matched or not matched, depending on
     /// count of cards selected and card attributes.
     ///
     /// - Parameter card: A Card that is chosen by the user
     mutating func choose(_ card: Card) {
+        for index in cardsInPlay.indices {
+            cardsInPlay[index].isFaceUp = true
+        }
+        
         if setIsSelected() {
             discardCards()
             toggleCard(card: card)
 
             //deal cards if count is below 12
-            if cardsInPlay.count < dealtCardsSize {
-                dealCards()
-            }
+//            if cardsInPlay.count < dealtCardsSize {
+//                dealCards()
+//            }
         } else if selectedCards.count == setSize && !setIsSelected() {
             for selectedCard in selectedCards {
                 if let index = cardsInPlay.firstIndex(of: selectedCard) {
@@ -94,6 +98,7 @@ struct SetGame<Card> where Card: SetCard {
             if cardsInPlay[index] == card {
                 cardsInPlay[index].isSelected.toggle()
                 //print(cardsInPlay[index])
+                //cardsInPlay[index].isFaceUp.toggle()
             }
         }
     }
@@ -103,6 +108,8 @@ struct SetGame<Card> where Card: SetCard {
         for _ in selectedCards.indices {
             if let index = cardsInPlay.firstIndex(of: selectedCards.first!) {
                 cardsInPlay[index].isSelected = false
+                cardsInPlay[index].isMatched = nil
+                discardPile.append(cardsInPlay[index])
                 cardsInPlay.remove(at: index)
             }
         }
@@ -111,12 +118,25 @@ struct SetGame<Card> where Card: SetCard {
     /// Deals a given amount of cards into play.
     ///
     /// - Parameter quantity: The amount of cards to be dealt. Defaults to 3.
-    mutating func dealCards(_ quantity: Int = 3) {
+//    mutating func dealCards(_ quantity: Int = 3) {
+//        if setIsSelected() {
+//            discardCards()
+//        }
+//        for index in 0..<quantity {
+//            deck[index].isFaceUp = true
+//        }
+//        cardsInPlay.append(contentsOf: deck.prefix(quantity))
+//        deck = Array(deck.dropFirst(quantity))
+//    }
+    mutating func dealCard() {
         if setIsSelected() {
             discardCards()
         }
-        cardsInPlay.append(contentsOf: deck.prefix(quantity))
-        deck = Array(deck.dropFirst(quantity))
+        //deck[0].isFaceUp = true
+        if !deck.isEmpty {
+            cardsInPlay.append(deck.first!)
+            deck = Array(deck.dropFirst())
+        }
     }
     
     //MARK: - Constraints

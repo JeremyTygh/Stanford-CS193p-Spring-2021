@@ -9,7 +9,7 @@ import SwiftUI
 
 import SwiftUI
 
-struct AspectVGrid<Item, ItemView>: View where ItemView: View, Item: Identifiable {
+struct AspectVGrid<Item, ItemView>: View where ItemView: View, Item: Identifiable, Item: Equatable {
     var items: [Item]
     var aspectRatio: CGFloat
     var content: (Item) -> ItemView
@@ -22,20 +22,34 @@ struct AspectVGrid<Item, ItemView>: View where ItemView: View, Item: Identifiabl
     
     var body: some View {
         GeometryReader{ geometry in
-            ScrollView {
-                VStack {
-                    let width: CGFloat = widthThatFits(itemCount: items.count, in: geometry.size, itemAspectRatio: aspectRatio)  //for now
-                    LazyVGrid(columns: [adaptiveGridItem(width: width)], spacing: 0) {
-                        ForEach(items) { item in
-                            content(item).aspectRatio(aspectRatio, contentMode: .fit)
+            ScrollViewReader { scrollView in
+                ScrollView {
+                    VStack {
+                        let width: CGFloat = widthThatFits(itemCount: items.count, in: geometry.size, itemAspectRatio: aspectRatio)  //for now
+                        LazyVGrid(columns: [adaptiveGridItem(width: width)], spacing: 0) {
+                            ForEach(items) { item in
+                                content(item).aspectRatio(aspectRatio, contentMode: .fit)
+                                    .id(item.id)
+                            }
                         }
+                        
+                        
+                        Spacer(minLength: 0) //adding spacer makes makes VGrid flexible
                     }
-                    Spacer(minLength: 0) //adding spacer makes makes VGrid flexible
+                    
+                    //.padding(.horizontal)
                 }
-                //.padding(.horizontal)
+                .onAppear() {
+                    scrollView.scrollTo(items.last?.id)
+                }
+                .onChange(of: items.count) { _ in
+                        scrollView.scrollTo(items.last?.id)
+                }
+                
             }
+            
         }
-
+        
     }
     
     private func adaptiveGridItem(width: CGFloat) -> GridItem {

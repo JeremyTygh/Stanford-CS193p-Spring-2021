@@ -24,34 +24,21 @@ struct CardView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                let shape = RoundedRectangle(cornerRadius: DrawingConstants.cornerRadius)
-                shape.fill().foregroundColor(.white)
-
-                if card.isMatched != nil {
-                    if card.isMatched == true {
-                        shape.strokeBorder(lineWidth: DrawingConstants.lineWidth).foregroundColor(Color.green)
-                    } else {
-                        shape.strokeBorder(lineWidth: DrawingConstants.lineWidth).foregroundColor(Color.red)
-                    }
-                } else if card.isSelected {
-                    shape.strokeBorder(lineWidth: DrawingConstants.lineWidth).foregroundColor(Color.blue)
-                } else {
-                    shape.strokeBorder(lineWidth: DrawingConstants.lineWidth).foregroundColor(Color.black)
-                }
-                
                 VStack {
                     ForEach(0..<card.setNumber.rawValue, id: \.self) { _ in
                         createShape(card: card)
                             .padding(4)
                             .foregroundColor(color)
                             .aspectRatio(2/1, contentMode: .fit)
+                            .rotationEffect(Angle.degrees((card.isMatched ?? false) ? 360 : 0))
+                            .animation(.linear(duration: 1))
+                            .shake(animatableData: card.isMatched == false ? 1 : 0)
+                            
                     }
-//                    .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
-//                    .animation(Animation.linear(duration: 1).repeatForever(autoreverses: false))
                 }
-                .padding()
-
+                .padding()                
             }
+            .cardify(card: card)
         }
     }
 }
@@ -87,9 +74,6 @@ struct CardView: View {
 }
 
 private struct DrawingConstants {
-    static let cornerRadius: CGFloat = 10
-    static let lineWidth: CGFloat = 3
-    static let fontScale: CGFloat = 0.7
     static let shapeOpacity: Double = 0.3
 }
 

@@ -47,6 +47,10 @@ class ShapeSetGame: ObservableObject {
     var deck: [ShapeSetCard] {
         model.deck
     }
+    
+    var discardPile: [ShapeSetCard] {
+        model.discardPile
+    }
 
     var score: Int {
         model.score
@@ -62,13 +66,17 @@ class ShapeSetGame: ObservableObject {
         model.choose(card)
     }
     
-    func dealCards(_ quantity: Int = 3) {
-        model.dealCards()
+//    func dealCards(_ quantity: Int = 3) {
+//        model.dealCards()
+//    }
+    
+    func dealCard() {
+        model.dealCard()
     }
     
-    func dealFirstCards() {
-        model.dealCards(12)
-    }
+//    func dealFirstCards() {
+//        model.dealCards(12)
+//    }
 
     
 }

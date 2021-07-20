@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DD57BD3226A0CAC6006A4EA8 /* Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD57BD3126A0CAC6006A4EA8 /* Cardify.swift */; };
+		DD57BD3526A4E4C9006A4EA8 /* Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD57BD3426A4E4C9006A4EA8 /* Shake.swift */; };
 		DD63440D26911D300044D36F /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD63440C26911D300044D36F /* AspectVGrid.swift */; };
 		DD634410269364B80044D36F /* ShapeSetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD63440F269364B80044D36F /* ShapeSetCard.swift */; };
 		DD634414269366040044D36F /* SetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD634413269366040044D36F /* SetCard.swift */; };
@@ -21,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DD57BD3126A0CAC6006A4EA8 /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
+		DD57BD3426A4E4C9006A4EA8 /* Shake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shake.swift; sourceTree = "<group>"; };
 		DD63440C26911D300044D36F /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
 		DD63440F269364B80044D36F /* ShapeSetCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeSetCard.swift; sourceTree = "<group>"; };
 		DD634413269366040044D36F /* SetCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCard.swift; sourceTree = "<group>"; };
@@ -69,7 +73,9 @@
 			isa = PBXGroup;
 			children = (
 				DD680D76268386B700817159 /* ShapeSetGameView.swift */,
+				DD57BD3126A0CAC6006A4EA8 /* Cardify.swift */,
 				DD6344182693671B0044D36F /* CardView.swift */,
+				DD57BD3426A4E4C9006A4EA8 /* Shake.swift */,
 				DD63440C26911D300044D36F /* AspectVGrid.swift */,
 				DD680D872685669100817159 /* Diamond.swift */,
 			);
@@ -186,11 +192,13 @@
 				DD680D882685669100817159 /* Diamond.swift in Sources */,
 				DD6344192693671B0044D36F /* CardView.swift in Sources */,
 				DD680D77268386B700817159 /* ShapeSetGameView.swift in Sources */,
+				DD57BD3526A4E4C9006A4EA8 /* Shake.swift in Sources */,
 				DD63440D26911D300044D36F /* AspectVGrid.swift in Sources */,
 				DD680D85268386D800817159 /* SetGame.swift in Sources */,
 				DD680D75268386B700817159 /* Set_App.swift in Sources */,
 				DD634410269364B80044D36F /* ShapeSetCard.swift in Sources */,
 				DD634414269366040044D36F /* SetCard.swift in Sources */,
+				DD57BD3226A0CAC6006A4EA8 /* Cardify.swift in Sources */,
 				DD680D8B2685696F00817159 /* ShapeSetGame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -324,7 +332,7 @@
 				DEVELOPMENT_TEAM = 68L9R8XN97;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Set!/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -346,7 +354,7 @@
 				DEVELOPMENT_TEAM = 68L9R8XN97;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Set!/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

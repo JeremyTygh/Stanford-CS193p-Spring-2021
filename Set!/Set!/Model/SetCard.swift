@@ -21,6 +21,7 @@ protocol SetCard: Identifiable, Equatable {
     
     var isMatched: Bool? {get set}
     var isSelected: Bool {get set}
+    var isFaceUp: Bool {get set}
 }
 
 extension SetCard {
