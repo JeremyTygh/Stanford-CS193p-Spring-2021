@@ -350,6 +350,7 @@ Please reference the "Set!" folder above to see my implmentation for assignment 
 ### Concepts to practice: Animation (implicit and explicit)
 
 ### Task 1-5:
+
 Your assignment this week must still play a solo game of Set.
 
 In this version, though, when there is a match showing and the user chooses another card, do not replace the matched cards; instead, discard them (leaving fewer cards in the game).
@@ -397,6 +398,7 @@ var discardPileBody: some View {
     }
 ```
 Task 6:
+
 Any time matched cards are discarded, they should be animated to “fly” to the discard pile.
 
 ```swift
@@ -409,6 +411,7 @@ Any time matched cards are discarded, they should be animated to “fly” to th
 ```
 
 Task 7:
+
 You don’t need your “Deal 3 More Cards” button any more. Instead, tapping on the deck should deal 3 more cards.
 
 ```swift
@@ -422,6 +425,7 @@ You don’t need your “Deal 3 More Cards” button any more. Instead, tapping 
 ```
 
 Task 8: 
+
 Whenever more cards are dealt into the game for any reason (including to start the game), their appearance should be animated by “flying them” from the deck into place.
 ```swift
 private func dealAnimation(count: Double, index: Int, totalDealDuration: Double) -> Animation {
@@ -431,6 +435,7 @@ private func dealAnimation(count: Double, index: Int, totalDealDuration: Double)
 ```
 
 Task 9-10:
+
 Note that dealing 3 more cards when a match is showing on the board still should replace those cards and that those matched cards would be flying to the discard pile at the same time as the 3 new cards are flying from the deck (see Extra Credit too).
 
 All the card repositioning and resizing that was required by Required Task 2 in last week’s assignment must now be animated. If your cards from last week never changed their size or position as cards were dealt or discarded, then fix that this week so that they do.
@@ -448,6 +453,7 @@ All the card repositioning and resizing that was required by Required Task 2 in 
 ```
 
 Task 11:
+
 When a match occurs, use some animation (your choice) to draw attention to the match.
 
 ```swift
@@ -456,6 +462,7 @@ When a match occurs, use some animation (your choice) to draw attention to the m
 ```
 
 Task 12:
+
 When a mismatch occurs, use some animation (your choice) to draw attention to the mismatch. This animation must be very noticeably different from the animation used to show a match (obviously).
 ```swift
 //modifier on shape in CardView
