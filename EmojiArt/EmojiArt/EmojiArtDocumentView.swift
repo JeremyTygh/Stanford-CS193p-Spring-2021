@@ -79,7 +79,7 @@ struct EmojiArtDocumentView: View {
     }
     
     
-    let testEmojis = "🐮😀🇳🇴🇺🇸🧔🏻🧑🏾‍🦱🐥🐓🎃🤖🤠"
+    let testEmojis = "🐮😀🇳🇴🇺🇸🧔🏻🧑🏾‍🦱🐥🐓🎃🤖🤠👻"
 }
 
 struct ScrollingEmojisView: View {
