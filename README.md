@@ -469,6 +469,167 @@ When a mismatch occurs, use some animation (your choice) to draw attention to th
 .shake(animatableData: card.isMatched == false ? 1 : 0)
 ```
 
+## Assignment V
+
+### Concepts to practice: Gestures 
+
+### Task 1-2:
+
+Download the version of EmojiArt from Lecture 10. Do not break anything that is working there as part of your solution to this assignment.
+
+Support the selection of one or more of the emojis which have been dragged into your EmojiArt document (i.e. you’re selecting the emojis in the document, not the ones in the palette at the bottom). You can show which emojis are selected in any way you’d like. The selection is not persistent (in other words, restarting your app will not preserve the selection).
+
+```swift
+    @State private var selectedEmojis = Set<EmojiArtModel.Emoji>()
+    
+    ForEach(document.emojis) { emoji in
+        Text(emoji.text)
+            .border(selectedEmojis.contains(matching: emoji) ? Color.black : Color.clear)
+            //...
+```
+
+### Task 3-4:
+
+Tapping on an unselected emoji should select it.
+
+Tapping on a selected emoji should unselect it.
+
+```swift
+ForEach(document.emojis) { emoji in
+        Text(emoji.text)
+                .onTapGesture {
+                    selectedEmojis.toggleMembership(of: emoji)
+                }
+                //...
+```
+
+### Task 5: 
+
+Single-tapping on the background of your EmojiArt (i.e. single-tapping anywhere except on an emoji) should deselect all emoji.
+
+```swift
+//in documentBody 
+.onTapGesture {
+    withAnimation(.linear(duration: 0.1)) {
+        selectedEmojis.removeAll()
+    }
+}
+```
+
+### Task 6-7:
+
+Dragging a selected emoji should move the entire selection to follow the user’s finger.
+
+If the user makes a dragging gesture when there is no selection, pan the entire document (i.e., as EmojiArt does in L10).
+
+```swift
+// MARK: - Emoji Dragging
+    
+    @GestureState private var gestureDragOffset: CGSize = CGSize.zero
+  
+    
+    private func dragEmojiGesture(for emoji: EmojiArtModel.Emoji) -> some Gesture {
+        DragGesture()
+            .updating($gestureDragOffset) { latestDragGestureValue, gestureDragOffset, _ in
+                gestureDragOffset = latestDragGestureValue.translation / zoomScale
+                for emoji in selectedEmojis {
+                    document.moveEmoji(emoji, by: gestureDragOffset)
+                }
+            }
+            .onEnded { finalDragGestureValue in
+                let draggedOffset = finalDragGestureValue.translation / zoomScale
+
+                for emoji in selectedEmojis {
+                    document.moveEmoji(emoji, by: draggedOffset)                
+                }
+            }
+    }
+```
+
+```swift
+.gesture(dragEmojiGesture(for: emoji))
+```
+
+### Task 8-9: 
+
+If the user makes a pinching gesture anywhere in the EmojiArt document and there is a selection, all of the emojis in the selection should be scaled by the amount of the pinch.
+
+If there is no selection at the time of a pinch, the entire document should be scaled.
+
+```swift
+// MARK: - Zooming
+    
+    @State private var steadyStateZoomScale: CGFloat = 1
+    @GestureState private var gestureZoomScale: CGFloat = 1
+   
+    //....
+    
+    private func zoomScale(for emoji: EmojiArtModel.Emoji) -> CGFloat{
+        if selectedEmojis.contains(matching: emoji) {
+            return steadyStateZoomScale * gestureZoomScale
+        } else {
+            return zoomScale
+        }
+    }
+    
+    private func zoomGesture() -> some  Gesture {
+        MagnificationGesture()
+            .updating($gestureZoomScale) { latestGestureScale, gestureZoomScale, _ in
+                gestureZoomScale = latestGestureScale
+            }
+            .onEnded { gestureScaleAtEnd in
+                if selectedEmojis.isEmpty {
+                    steadyStateZoomScale *= gestureScaleAtEnd
+                } else {
+                    for emoji in selectedEmojis {
+                        document.scaleEmoji(emoji, by: gestureScaleAtEnd)
+                    }
+                }
+            }
+    }
+```
+### Task 10:
+
+Make it possible to delete emojis from the EmojiArt document. This Required Task is intentionally not saying what user-interface actions should cause this. Be creative and try to find a way to delete the emojis that feels comfortable and intuitive.
+
+```swift
+//Model
+mutating func removeEmoji(_ emoji: Emoji) {
+    emojis.remove(emoji)
+}
+
+//ViewModel
+func removeEmoji(_ emoji: EmojiArtModel.Emoji) {
+    emojiArt.removeEmoji(emoji)
+}
+```
+
+```swift
+//MARK: - Deletion
+    
+    private func removeEmoji() {
+        for emoji in selectedEmojis {
+            if document.emojis.contains(matching: emoji) {
+                document.removeEmoji(emoji)
+                selectedEmojis.remove(emoji)
+            }
+        }
+    }
+```
+
+```swift
+var palette: some View {
+        HStack {
+            Spacer()
+            Button(action: { removeEmoji() }) {
+                Image(systemName: "trash")
+                    .font(.system(size: defaultEmojiFontSize))
+            }
+            .disabled(selectedEmojis.isEmpty ? true : false)
+         //....
+}
+```
+
 
 
 
