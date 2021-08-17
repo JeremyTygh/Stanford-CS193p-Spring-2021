@@ -20,6 +20,10 @@ extension Collection where Element: Identifiable {
     func index(matching element: Element) -> Self.Index? {
         firstIndex(where: { $0.id == element.id })
     }
+    
+    func contains(matching element: Element) -> Bool {
+        self.contains(where: { $0.id == element.id })
+    }
 }
 
 // we could do the same thing when it comes to removing an element
@@ -250,5 +254,34 @@ extension Array where Element == NSItemProvider {
     }
     func loadFirstObject<T>(ofType theType: T.Type, using load: @escaping (T) -> Void) -> Bool where T: _ObjectiveCBridgeable, T._ObjectiveCType: NSItemProviderReading {
         loadObjects(ofType: theType, firstOnly: true, using: load)
+    }
+}
+
+//extension Set where Element: Identifiable {
+//    mutating func toggleMatching(emoji: Element) {
+//        if self.contains(emoji) {
+//            self.remove(emoji)
+//        } else {
+//            self.insert(emoji)
+//        }
+//    }
+//}
+
+struct AnimatableSystemFontModifier: AnimatableModifier {
+    var size: CGFloat
+    
+    func body(content: Content) -> some View {
+        content.font(Font.system(size: size))
+    }
+    
+    var animatableData: CGFloat {
+        get { size }
+        set { size = newValue }
+    }
+}
+
+extension View {
+    func font(animatableWithSize size: CGFloat) -> some View {
+        self.modifier(AnimatableSystemFontModifier(size: size))
     }
 }
