@@ -629,6 +629,63 @@ var palette: some View {
          //....
 }
 ```
+### Extra Credit 1: 
+
+Allow dragging unselected emoji separately. In other words, if the user drags an emoji that is part of the selection, move the entire selection (as required above). But if the user drags an emoji that is not part of the selection, then move only that emoji (and do not add it to the selection). You will find that this is a much more comfortable interface for placing emojis. Doing this will very likely require you to have a more sophisticated @GestureState for your drag gesture.
+
+```swift
+ private func dragEmojiGesture(for emoji: EmojiArtModel.Emoji) -> some Gesture {
+        
+        let isSelected = selectedEmojis.contains(matching: emoji)
+        
+        return DragGesture()
+            .updating($gestureDragOffset) { latestDragGestureValue, gestureDragOffset, _ in
+                gestureDragOffset = latestDragGestureValue.translation / zoomScale
+                
+                if isSelected {
+                    for emoji in selectedEmojis {
+                        document.moveEmoji(emoji, by: gestureDragOffset)
+                    }
+                } else {
+                    document.moveEmoji(emoji, by: gestureDragOffset)
+                }
+    
+            }
+            
+            //...
+  }
+            
+```
+
+### Extra Credit 2: 
+
+Zooming in to high zoomScales starts to make the emoji look a bit “grainy”. This is because we are using scaleEffect to scale the Text up. These emoji would look quite a bit sharper if we scaled the font size itself. In other words, a font of size 100 is going to look sharper than a font of size 20 with a scaleEffect of 5. But as we learned back in Memorize, trying to zoom a font by just changing its size results in poor animation because the .font modifier is not animatable. See if you can figure out how to make an AnimatableSystemFontModifier that will animate the size of a system font and use that instead of the combination of .font and .scaleEffect we are using now. This ViewModifier can be written in 6 lines of code (not saying you have to do it that efficiently, but just so you know what’s possible).
+
+```swift
+struct AnimatableSystemFontModifier: AnimatableModifier {
+    var size: CGFloat
+    
+    func body(content: Content) -> some View {
+        content.font(Font.system(size: size))
+    }
+    
+    var animatableData: CGFloat {
+        get { size }
+        set { size = newValue }
+    }
+}
+
+extension View {
+    func font(animatableWithSize size: CGFloat) -> some View {
+        self.modifier(AnimatableSystemFontModifier(size: size))
+    }
+}
+```
+```swift
+.font(animatableWithSize: fontSize(for: emoji) * zoomScale(for: emoji))
+
+```
+
 
 
 
