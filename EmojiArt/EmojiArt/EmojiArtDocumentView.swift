@@ -150,21 +150,38 @@ struct EmojiArtDocumentView: View {
 //    }
     
     private func dragEmojiGesture(for emoji: EmojiArtModel.Emoji) -> some Gesture {
-        DragGesture()
+        
+        let isSelected = selectedEmojis.contains(matching: emoji)
+        
+        return DragGesture()
             .updating($gestureDragOffset) { latestDragGestureValue, gestureDragOffset, _ in
                 gestureDragOffset = latestDragGestureValue.translation / zoomScale
-                //document.moveEmoji(emoji, by: gestureDragOffset)
-                for emoji in selectedEmojis {
-                        document.moveEmoji(emoji, by: gestureDragOffset)
+
+//                for emoji in selectedEmojis {
+//                        document.moveEmoji(emoji, by: gestureDragOffset)
+//                }
+                if isSelected {
+                    for emoji in selectedEmojis {
+                        //withAnimation {
+                            document.moveEmoji(emoji, by: gestureDragOffset)
+                        //}
+                    }
+                } else {
+                    document.moveEmoji(emoji, by: gestureDragOffset)
                 }
+    
             }
             .onEnded { finalDragGestureValue in
                 let draggedOffset = finalDragGestureValue.translation / zoomScale
 
-                for emoji in selectedEmojis {
-                    //withAnimation {
-                        document.moveEmoji(emoji, by: draggedOffset)
-                    //}
+                if isSelected {
+                    for emoji in selectedEmojis {
+                        //withAnimation {
+                            document.moveEmoji(emoji, by: draggedOffset)
+                        //}
+                    }
+                } else {
+                    document.moveEmoji(emoji, by: draggedOffset)
                 }
             }
     }
