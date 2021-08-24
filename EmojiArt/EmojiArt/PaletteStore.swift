@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Palette: Identifiable, Codable {
+struct Palette: Identifiable, Codable, Hashable {
     var name: String
     var emojis: String
     var id: Int
@@ -31,6 +31,7 @@ class PaletteStore: ObservableObject {
     private var userDefaultsKey: String {
         "PaletteStore: " + name
     }
+    
     private func storeInUserDefaults() {
         UserDefaults.standard.set(try? JSONEncoder().encode(palettes), forKey: userDefaultsKey)
 //        UserDefaults.standard.set(palettes.map { [$0.name, $0.emojis, String($0.id)] }, forKey: userDefaultsKey)
